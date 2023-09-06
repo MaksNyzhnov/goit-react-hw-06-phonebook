@@ -4,7 +4,7 @@ import Section from "./Section/Section";
 import Form from "./Form/Form";
 import Filter from "./Filter/Filter";
 import ContactList from "./ContactList/ContactList";
-import useLocalStorage from "./Hooks/useLocalStorage";
+
 const App = () => {
 
 
