@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/contacts/contactsSlice';
+
 import { nanoid } from 'nanoid';
 
 import css from './Form.module.css';
@@ -12,18 +11,16 @@ const nameInputPattern =
 const phoneInputPattern =
   '+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}';
 
-const Form = () => {
+const Form = ({ addContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [currentContact, setCurrentContact] = useState({});
 
-  const dispatch = useDispatch();
   const onFormSubmit = event => {
     event.preventDefault();
 
     currentContact.id = nanoid(5);
-
-    dispatch(addContact(currentContact));
+    addContact(currentContact);
 
     formReset();
   };
