@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 import { nanoid } from 'nanoid';
-
+import { addContact } from 'redux/contacts/contactsSlice';
 import css from './Form.module.css';
 
 const inputNameId = nanoid(5);
@@ -11,16 +12,41 @@ const nameInputPattern =
 const phoneInputPattern =
   '+?d{1,4}?[-.s]?(?d{1,3}?)?[-.s]?d{1,4}[-.s]?d{1,4}[-.s]?d{1,9}';
 
-const Form = ({ addContact }) => {
+const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const [currentContact, setCurrentContact] = useState({});
+  const contacts = useSelector(state => state.contacts);
+
+  const dispatch = useDispatch();
+
+  const checkContactRepetition = (contact, presentContacts) => {
+    for (let item of presentContacts) {
+      if (item.name === contact.name) {
+        return true;
+      }
+    }
+    return false;
+  };
+
+  const showAlert = name => {
+    alert(`${name} is already in your contacts`);
+  };
+
+  const onAddContact = contact => {
+    if (checkContactRepetition(contact, contacts)) {
+      showAlert(contact.name);
+      return;
+    }
+
+    dispatch(addContact(contact));
+  };
 
   const onFormSubmit = event => {
     event.preventDefault();
 
     currentContact.id = nanoid(5);
-    addContact(currentContact);
+    onAddContact(currentContact);
 
     formReset();
   };
